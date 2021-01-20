@@ -3,19 +3,18 @@ import 'package:brew_crew/shared/constants.dart';
 import 'package:brew_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatefulWidget {
+class Register extends StatefulWidget {
   final Function toggleView;
-  SignIn({this.toggleView});
-
+  Register({this.toggleView});
   @override
-  _SignInState createState() => _SignInState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
-
   final _formKey = GlobalKey<FormState>();
   String error = '';
+
   String email = '';
   String password = '';
   bool loading = false;
@@ -30,11 +29,11 @@ class _SignInState extends State<SignIn> {
               backgroundColor: Colors.brown[400],
               elevation: 0.0,
               centerTitle: false,
-              title: Text('Sign in to Brew Crew'),
+              title: Text('Sign up to Brew Crew'),
               actions: [
                 FlatButton.icon(
                   icon: Icon(Icons.person),
-                  label: Text('Register'),
+                  label: Text('Sign in'),
                   onPressed: () {
                     widget.toggleView();
                   },
@@ -56,8 +55,9 @@ class _SignInState extends State<SignIn> {
                       TextFormField(
                         decoration:
                             textInputDecoration.copyWith(hintText: 'Email'),
-                        validator: (value) =>
-                            (value.isEmpty) ? 'Enter an email' : null,
+                        validator: (value) => (value.isEmpty)
+                            ? 'Enter a valid email address'
+                            : null,
                         onChanged: (value) {
                           setState(() {
                             email = value;
@@ -84,7 +84,7 @@ class _SignInState extends State<SignIn> {
                       RaisedButton(
                           color: Colors.pink[400],
                           child: Text(
-                            'Sign In',
+                            'Register',
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -94,12 +94,12 @@ class _SignInState extends State<SignIn> {
                               setState(() {
                                 loading = true;
                               });
-                              dynamic result = await _auth
-                                  .signInWithEmailAndPassword(email, password);
+                              dynamic result =
+                                  await _auth.registerWithEmailAndPassword(
+                                      email, password);
                               if (result == null) {
                                 setState(() {
-                                  error =
-                                      'Please supply a valid email and password combination';
+                                  error = 'Please supply a valid email';
                                   loading = false;
                                 });
                               }

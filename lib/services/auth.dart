@@ -28,11 +28,32 @@ class AuthService {
     }
   }
 
-  // TODO: Sign in with email and password
+  Future signInWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user;
 
-  // TODO: Register with email and password
+      return _userFromFirbaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
-  // TODO: Sign out
+  Future registerWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user;
+
+      return _userFromFirbaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   Future signOut() async {
     try {
       return await _auth.signOut();
